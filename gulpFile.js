@@ -3,22 +3,35 @@ var gulp=require("gulp"),
       plumber = require('gulp-plumber'),
       concat = require('gulp-concat'),
       run = require('gulp-run');
+
+
+//In this case only have this css
 gulp.task('styles', function(){
-	console.log('styles');
+	gulp.src('client/**/bootstrap.min.css')
+	.pipe(concat('app.css'))
+	.pipe(gulp.dest('build/css'));
 });
 
 gulp.task('scripts', function(){
-	gulp.src(['client/**/*.js', '!client/libs/**/*.js'])
+	gulp.src(['client/libs/jquery.min.js', 'client/libs/angular.min.js', 'client/libs/ng-resource.min.js', 'client/libs/ng-route.min.js','client/app/**/*.js'])
 	.pipe(plumber())
 	.pipe(concat('dest.js'))
 	.pipe(ugilfy())
 	.pipe(gulp.dest('build/js'));
 });
 
-gulp.task('moveLibs', function(){
-	gulp.src("client/libs/**/*.*")
-	      .pipe(gulp.dest('build/libs'));
-})
+gulp.task('libs', function(){
+	gulp//.src('client/libs/**/*.*')
+	.src(['client/libs/jquery.min.js', 'client/libs/angular.min.js', 'client/libs/ng-resource.min.js', 'client/libs/ng-route.min.js'])
+	.pipe(concat('libs.js'))
+	.pipe(gulp.dest('build/libs'));
+});
+
+gulp.task('html', function(){
+	gulp.src('client/app/**/*.html')
+	.pipe(gulp.dest('build/app'));
+});
+
 
 //Watch Task
 //Watches js file changes
@@ -34,6 +47,6 @@ gulp.task('runDevelop', function(){
 	run('NODE_ENV="develop" node server/app.js').exec();
 });
 
-gulp.task('default', ['scripts', 'styles', 'moveLibs', 'runProduction']);
+gulp.task('default', ['scripts', 'styles', 'html', 'runProduction']);
 
-gulp.task('develop',  ['scripts', 'styles', 'moveLibs', 'runDevelop', 'watch']);
+gulp.task('develop',  ['scripts', 'styles', 'runDevelop', 'watch']);

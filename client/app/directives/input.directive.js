@@ -1,3 +1,5 @@
+'use strict';
+//This directive is used to increase the number of the number in a number input
 (
     function () {
         angular.module('winter').directive('inputNumberIncrease', inputFocus);

@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
     angular.module('winter').controller('HomeController', HomeController);
     HomeController.$inject = ['item', '$scope'];

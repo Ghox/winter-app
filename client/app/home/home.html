@@ -1,0 +1,41 @@
+
+        <form  name="itemForm" novalidate>
+            <table class="table table-striped">
+                  <tr>
+                    <th>Name</th>
+                    <th>Amount</th> 
+                    <th>Actions</th>
+                  </tr>
+                  <tr ng-repeat="item in home.items" >
+                        <td ng-class="{ 'has-error' :itemForm['itemUpdateName'+$index].$invalid}">
+                            <input type="text" class="form-control" id="itemUpdateName"  name="itemUpdateName{{$index}}" ng-model="item.name" required>
+                        </td>
+                        <td ng-class="{ 'has-error' :itemForm['itemUpdateAmount'+$index].$invalid}">
+                            <input type="number" class="form-control" id="itemUpdateAmount" name="itemUpdateAmount{{$index}}" ng-model="item.amount" input-number-increase amount-increase="item.amount" required>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-warning" ng-disabled="home.allDisabled ||
+                                 itemForm['itemUpdateName'+$index].$invalid ||
+                                 itemForm['itemUpdateAmount'+$index].$invalid" ng-click="home.updateItem(item, itemForm)">Update</button>
+                            <button type="button" class="btn btn-danger" ng-disabled="home.allDisabled"  ng-click="home.deleteItem(item, itemForm)">Delete</button>
+                        </td>
+                  </tr>
+                  <tr  >
+                        <td ng-class="{ 'has-error' : itemForm.name.$invalid && itemForm.$submitted }">
+                            <input type="text" class="form-control" placeholder="item name" name="name" id="name" ng-model="home.item.name" required>
+                        </td>
+                        <td ng-class="{ 'has-error' : itemForm.amount.$invalid && itemForm.$submitted }">
+                            <input type="number" class="form-control" placeholder="amount  of  items" id="amount" name="amount" ng-model="home.item.amount" input-number-increase amount-increase="home.item.amount" required>
+                        </td>
+                        <td>
+                            <input type="submit" ng-disabled="home.allDisabled" class="btn btn-info" 
+                            ng-click="itemForm.amount.$valid&&itemForm.name.$valid&&home.createItem(name, itemForm)" 
+                            value="save">
+                        </td>
+                  </tr>
+                </table>
+                <div class="alert alert-danger" ng-show="home.showError">
+                  <strong>Error!</strong> There was an problem, please try again later
+                </div>
+
+        </form>
