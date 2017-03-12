@@ -1,1 +1,1 @@
-angular.module('winter', ['ngResource']);
+angular.module('winter', ['ngResource', 'ngRoute']);

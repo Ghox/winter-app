@@ -15,6 +15,9 @@ function show(userId){
 }
 
 function create(request, response){
+    if(!validateItem(request.body)){
+      return handleError(request, err); 
+    }
     itemModel.create(request.body, function(err, item) {
     if(err) { 
         return handleError(request, err); 
@@ -62,19 +65,9 @@ function destroy(request, response){
   });
 }
 
-function createMany(){
-
-    
-    var item1 = new itemModel({"name":"gomez"});
-    var item2 = new itemModel({"name":"peke"});
-    var item3 = new itemModel({"name":"hannia"});
-    var list = [item1, item2, item3];
-    //itemModel.insertMany(list);
-    return response.send(list);
-
-    //itemModel.insertMany(list);
+function validateItem(item){
+  return item.name && item.amount;
 }
-
 
 function handleError(res, err) {
   return res.status(500).send(err);

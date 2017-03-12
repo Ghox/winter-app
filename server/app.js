@@ -2,13 +2,10 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
- mongoose.Promise = global.Promise
-/* 
- * Mongoose by default sets the auto_reconnect option to true.
- * We recommend setting socket options at both the server and replica set level.
- * We recommend a 30 second connection timeout because it allows for 
- * plenty of time in most operating environments.
- */
+ mongoose.Promise = global.Promise;
+
+ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
        replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };       
  
@@ -29,12 +26,17 @@ conn.once('open', function() {
 	app.use(bodyParser.json()); 
 	app.use(bodyParser.urlencoded({ extended: true }));
 
-	app.use(express.static('build'));
+	if(process.env.NODE_ENV==='production'){
+		app.use(express.static('build'));
+	}
+	else{
+		app.use(express.static('client'));
+	}
 
 
 	require('express')(app);
 
-	//routes
+	//routes 
 	app.use('/api/item', require('./api/item/item.routes'));
 
 	// Start server

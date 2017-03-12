@@ -26,8 +26,14 @@ gulp.task('watch', function(){
 	gulp.watch("client/**/*.js", ["scripts"])
 });
 
-gulp.task('runNode', function(){
+gulp.task('runProduction', function(){
 	run('node server/app.js').exec();
-})
+});
 
-gulp.task('default', ['scripts', 'styles', 'moveLibs', 'runNode', 'watch']);
+gulp.task('runDevelop', function(){
+	run('NODE_ENV="develop" node server/app.js').exec();
+});
+
+gulp.task('default', ['scripts', 'styles', 'moveLibs', 'runProduction']);
+
+gulp.task('develop',  ['scripts', 'styles', 'moveLibs', 'runDevelop', 'watch']);
