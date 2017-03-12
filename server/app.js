@@ -1,10 +1,9 @@
 'use strict';
 
-var express = require('express');
-var mongoose = require('mongoose');
+var express = require('express'),
+ mongoose = require('mongoose');
  mongoose.Promise = global.Promise;
 
- process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
        replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };       
@@ -19,14 +18,15 @@ conn.on('error', console.error.bind(console, 'connection error:'));
  
 conn.once('open', function() {
 	 // Setup server
-	var app = express();
-	var server = require('http').createServer(app);
-
-	var bodyParser = require('body-parser');
+	var app = express(),
+	       server = require('http').createServer(app),
+	       NODE_ENV = process.env.NODE_ENV || 'production',
+	       bodyParser = require('body-parser');
 	app.use(bodyParser.json()); 
 	app.use(bodyParser.urlencoded({ extended: true }));
 
-	if(process.env.NODE_ENV==='production'){
+	console.log('node running on ', NODE_ENV);
+	if(NODE_ENV==='production'){
 		app.use(express.static('build'));
 	}
 	else{
@@ -40,8 +40,9 @@ conn.once('open', function() {
 	app.use('/api/item', require('./api/item/item.routes'));
 
 	// Start server
-	server.listen(3000, function () {
-	    console.log('Express server listening on %d, in %s mode', 5000);
+	var port = 3000;
+	server.listen(port, function () {
+	    console.log('Express server listening on port:', port);
 	});
 
 

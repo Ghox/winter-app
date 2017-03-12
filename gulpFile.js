@@ -2,7 +2,7 @@ var gulp=require("gulp"),
       ugilfy = require("gulp-uglify"),
       plumber = require('gulp-plumber'),
       concat = require('gulp-concat'),
-      run = require('gulp-run');
+      nodemon = require('gulp-nodemon');
 
 
 //In this case only have this css
@@ -39,14 +39,25 @@ gulp.task('watch', function(){
 	gulp.watch("client/**/*.js", ["scripts"])
 });
 
-gulp.task('runProduction', function(){
-	run('node server/app.js').exec();
+gulp.task('startProduction', function(){
+	  nodemon({
+	    script: 'server/app.js',
+	    ext:'js html'
+	  })
 });
 
 gulp.task('runDevelop', function(){
-	run('NODE_ENV="develop" node server/app.js').exec();
+	run('node server/app.js asdf').exec();
 });
 
-gulp.task('default', ['scripts', 'styles', 'html', 'runProduction']);
+gulp.task('start', function () {
+  nodemon({
+    script: 'server/app.js'
+  , ext: 'js html'
+  , env: { 'NODE_ENV': 'development' }
+  })
+})
 
-gulp.task('develop',  ['scripts', 'styles', 'runDevelop', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'html', 'startProduction']);
+
+gulp.task('develop',  ['scripts', 'styles', 'start', 'watch']);
