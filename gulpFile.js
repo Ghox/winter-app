@@ -32,6 +32,11 @@ gulp.task('html', function(){
 	.pipe(gulp.dest('build/app'));
 });
 
+gulp.task('index', function(){
+	gulp.src('index.html')
+	.pipe(gulp.dest('build'));
+});
+
 
 //Watch Task
 //Watches js file changes
@@ -46,18 +51,14 @@ gulp.task('startProduction', function(){
 	  })
 });
 
-gulp.task('runDevelop', function(){
-	run('node server/app.js asdf').exec();
-});
-
-gulp.task('start', function () {
+gulp.task('startDevelop', function () {
   nodemon({
     script: 'server/app.js'
   , ext: 'js html'
   , env: { 'NODE_ENV': 'development' }
   })
-})
+});
 
-gulp.task('default', ['scripts', 'styles', 'html', 'startProduction']);
+gulp.task('default', ['scripts', 'styles', 'html', 'index', 'startProduction']);
 
-gulp.task('develop',  ['scripts', 'styles', 'start', 'watch']);
+gulp.task('develop',  ['scripts', 'styles', 'html', 'index','startDevelop', 'watch']);
