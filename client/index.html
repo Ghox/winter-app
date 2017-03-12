@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+    <title>Title</title>
+</head>
+<body>
+
+<div ng-app="winter">
+
+    <div ng-controller="HomeController as home">
+        <form name="itemForm" novalidate>
+            <table class="table table-striped">
+                  <tr>
+                    <th>Name</th>
+                    <th>Amount</th> 
+                    <th>Actions</th>
+                  </tr>
+                  <tr ng-repeat="item in home.items">
+                        <td>
+                            <input type="text" class="form-control" id="exampleInputName2" ng-model="item.name">
+                        </td>
+                        <td>
+                        <input type="number" class="form-control" id="amount" ng-model="item.amount" input-focus>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-warning" ng-click="item.$update()">Update</button>
+                            <button type="button" class="btn btn-danger" ng-click="home.deleteItem(item)">Delete</button>
+                        </td>
+                  </tr>
+                  <tr>
+                        <td ng-class="{ 'has-error' : itemForm.name.$invalid && itemForm.$submitted }">
+                            <input type="text" class="form-control" placeholder="item name" name="name" id="name" ng-model="home.item.name" required>
+                        </td>
+                        <td ng-class="{ 'has-error' : itemForm.amount.$invalid && itemForm.$submitted }">
+                            <input type="number" class="form-control" placeholder="amount  of  items" id="amount" name="amount" ng-model="home.item.amount" input-focus required>
+                        </td>
+                        <td>
+                            <input type="submit" ng-disabled="home.allDisabled" class="btn btn-info" ng-click="!itemForm.amount.$invalid&&home.createItem(name)" value="save">
+                        </td>
+                  </tr>
+                </table>
+            <div class="col-md-8 bg-danger" >
+              <!-- <input ng-model="name" type="number" input-focus><button ng-click="home.createItem(name)">save</button>-->
+            </div>
+            <div class="col-md-4 bg-primary">
+
+            </div>
+        </form>
+    </div>
+
+
+    
+<!--
+    <div ng-controller="salesmanController as sale">
+        
+    </div>
+
+    -->
+</div>
+
+
+</body>
+<script src="libs/jquery.min.js"></script>
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/angular.min.js"></script>
+<script src="libs/ng-resource.min.js"></script>
+
+<script src="app/app.js"></script>
+<script src="app/services/item.service.js"></script>
+<script src="app/directives/input.directive.js"></script>
+
+<script src="app/home/home.controller.js"></script>
+
+</html>
