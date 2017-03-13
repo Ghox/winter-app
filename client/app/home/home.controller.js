@@ -22,6 +22,7 @@
                         .then(
                             function(addedItem){ 
                                 vm.itemPagination();
+                                getTotalItems();
                                 resetForm(form);
                                 resetContext();
                         },handleError);
@@ -32,6 +33,7 @@
 	     item.$delete()
                     .then(function(response){
                        vm.itemPagination();
+                       getTotalItems();
                        resetContext();
                     }, handleError);
     	};
