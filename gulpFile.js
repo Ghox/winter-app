@@ -13,18 +13,11 @@ gulp.task('styles', function(){
 });
 
 gulp.task('scripts', function(){
-	gulp.src(['client/libs/jquery.min.js', 'client/libs/angular.min.js', 'client/libs/ng-resource.min.js', 'client/libs/ng-route.min.js','client/app/**/*.js'])
+	gulp.src(['client/libs/jquery.min.js', 'client/libs/angular.min.js', 'client/libs/ng-resource.min.js', 'client/libs/ui-bootstrap.min.js','client/libs/ng-route.min.js','client/app/**/*.js'])
 	.pipe(plumber())
 	.pipe(concat('dest.js'))
 	.pipe(ugilfy())
 	.pipe(gulp.dest('build/js'));
-});
-
-gulp.task('libs', function(){
-	gulp//.src('client/libs/**/*.*')
-	.src(['client/libs/jquery.min.js', 'client/libs/angular.min.js', 'client/libs/ng-resource.min.js', 'client/libs/ng-route.min.js'])
-	.pipe(concat('libs.js'))
-	.pipe(gulp.dest('build/libs'));
 });
 
 gulp.task('html', function(){
