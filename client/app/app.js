@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('winter', ['ngResource', 'ngRoute']);
+angular.module('winter', ['ngResource', 'ngRoute', 'ui.bootstrap']);

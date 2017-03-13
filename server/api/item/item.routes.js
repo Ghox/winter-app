@@ -5,10 +5,11 @@ var controller = require('./item.controller');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
+router.get('/:skip/:limit', controller.index);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.destroy);
+router.get('/count', controller.count);
+
 
 module.exports = router;

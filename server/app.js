@@ -33,7 +33,6 @@ conn.once('open', function() {
 		app.use(express.static('client'));
 	}
 
-
 	require('express')(app);
 
 	//routes 

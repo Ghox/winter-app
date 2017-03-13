@@ -2,16 +2,16 @@ var _ = require('lodash');
 var itemModel = require('./item.model');
 
 function index(request, response){
-    itemModel.find().exec(function (err, items) {
-    if(err) { 
-        return handleError(res, err);
-     }
+    itemModel.find()
+     .skip(parseInt(request.params.skip))
+     .limit(parseInt(request.params.limit))
+     .lean()
+     .exec(function (err, items) {
+        if(err) { 
+            return handleError(response, err);
+         }
     return response.status(200).json(items);
   });
-}
-
-function show(userId){
-
 }
 
 function create(request, response){
@@ -20,12 +20,23 @@ function create(request, response){
     }
     itemModel.create(request.body, function(err, item) {
     if(err) { 
-        return handleError(request, err); 
+        return handleError(response, err); 
     }
     return response.status(201).json(item);
   });
 }
-    
+  
+function count(request, response){
+   itemModel.find()
+    .count()
+    .exec(function(err, total){
+      if(err){
+        return handleError(response, err); 
+      }
+      return response.status(200).json({total:total});
+    });
+}
+
 function update(request, response){
      if(request.body._id) { 
         delete request.body._id; 
@@ -54,11 +65,11 @@ function destroy(request, response){
          return handleError(request, err); 
      }
     if(!item) { 
-        return request.status(404).send('Not Found'); 
+        return response.status(404).send('Not Found'); 
     }
     item.remove(function(err) {
       if(err) { 
-        return handleError(request, err); 
+        return handleError(response, err); 
         }
       return response.status(204).send('No Content');
     });
@@ -69,16 +80,16 @@ function validateItem(item){
   return item.name && item.amount;
 }
 
-function handleError(res, err) {
-  return res.status(500).send(err);
+function handleError(response, err) {
+  return response.status(500).send(err);
 }
 
 var controller = {
     index:index,
-    show: show,
     create,create,
     update: update,
-    destroy: destroy
+    destroy: destroy,
+    count:count
 };
 
 module.exports = controller;

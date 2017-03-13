@@ -2,13 +2,17 @@
 
 (function () {
     angular.module('winter').controller('HomeController', HomeController);
-    HomeController.$inject = ['item', '$scope'];
-    function HomeController(item, $scope) {
+    HomeController.$inject = ['item'];
+    function HomeController(item) {
+
+        //ng-change="humanitarian.getGallery()"
     	var vm = this;
     	vm.item = {};
     	vm.allDisabled = false;
              vm.showError = false;
-    	vm.items = item.query();
+             vm.currentPage = 1;
+             vm.itemsPerPage = 4;
+
     	vm.createItem = function createItem(name, form){
                     vm.allDisabled = true;
     	       var newItem = new item();
@@ -17,7 +21,7 @@
     	       newItem.$save()
                         .then(
                             function(addedItem){ 
-                                vm.items.push(addedItem);
+                                vm.itemPagination();
                                 resetForm(form);
                                 resetContext();
                         },handleError);
@@ -27,8 +31,7 @@
                  vm.allDisabled = true;
 	     item.$delete()
                     .then(function(response){
-                        var index = vm.items.indexOf(item);
-                        vm.items.splice(index, 1);    
+                       vm.itemPagination();
                        resetContext();
                     }, handleError);
     	};
@@ -56,6 +59,31 @@
                   form.$setUntouched();
     	};
 
+            vm.itemPagination =  function itemPagination(){
+                var skip = (vm.currentPage - 1) * vm.itemsPerPage;
+                vm.getItems(skip, vm.itemsPerPage);
+            }
+
+            function getTotalItems(){
+                item.count( function(response){
+                vm.totalItems = response.total;
+              });
+            }
+
+            vm.getItems = function getItems(skip, limit){
+                var params = {
+                    skip:skip,
+                    limit:limit
+                };
+                vm.items = item.query(params);
+            }
+
+            function init(){
+                vm.itemPagination();
+                getTotalItems();
+            }
+
+            init();
 
 
     }
